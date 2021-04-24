@@ -11,7 +11,7 @@ apt-get -q=2 install software-properties-common bash-completion curl tree zip un
 
 echo '==> Installing Git'
 
-apt-get -q=2 install git git-man
+apt-get -q=2 install git git-man > /dev/null 2>&1
 
 echo '==> Installing Apache'
 
