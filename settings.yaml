@@ -1,7 +1,7 @@
 ---
 :machine:
-  :timezone: Canada/Pacific
   :hostname: ubuntu-20-04
+  :timezone: Canada/Pacific
   :memory: 3072 # 3GB RAM
   :cpus: 1
 
