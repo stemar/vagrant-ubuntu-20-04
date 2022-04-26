@@ -3,7 +3,7 @@ echo '==> Setting time zone'
 timedatectl set-timezone $TIMEZONE
 cat /etc/timezone
 
-echo '==> Updating Ubuntu repositories'
+echo '==> Setting Ubuntu repositories'
 
 apt-get -q=2 update --fix-missing
 
@@ -33,7 +33,7 @@ echo '==> Installing Subversion'
 
 apt-get -q=2 install subversion > /dev/null 2>&1
 
-echo '==> Setting MariaDB 10.5 repository'
+echo '==> Setting MariaDB 10.6 repository'
 
 apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' > /dev/null 2>&1
 cp $VM_CONFIG_PATH/MariaDB.list /etc/apt/sources.list.d/MariaDB.list
