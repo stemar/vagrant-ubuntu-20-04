@@ -1,7 +1,6 @@
-echo '==> Setting time zone'
-
 timedatectl set-timezone $TIMEZONE
-cat /etc/timezone
+
+echo '==> Setting time zone to '$(cat /etc/timezone)
 
 echo '==> Setting Ubuntu repositories'
 
@@ -9,7 +8,7 @@ apt-get -q=2 update --fix-missing
 
 echo '==> Installing Linux tools'
 
-cp $VM_CONFIG_PATH/bash_aliases /home/vagrant/.bash_aliases
+cp /vagrant/config/bash_aliases /home/vagrant/.bash_aliases
 chown vagrant:vagrant /home/vagrant/.bash_aliases
 apt-get -q=2 install software-properties-common bash-completion curl tree zip unzip pv whois > /dev/null 2>&1
 
@@ -21,8 +20,8 @@ echo '==> Installing Apache'
 
 apt-get -q=2 install apache2 apache2-utils > /dev/null 2>&1
 apt-get -q=2 update
-cp $VM_CONFIG_PATH/localhost.conf /etc/apache2/conf-available/localhost.conf
-cp $VM_CONFIG_PATH/virtualhost.conf /etc/apache2/sites-available/virtualhost.conf
+cp /vagrant/config/localhost.conf /etc/apache2/conf-available/localhost.conf
+cp /vagrant/config/virtualhost.conf /etc/apache2/sites-available/virtualhost.conf
 sed -i 's|GUEST_SYNCED_FOLDER|'$GUEST_SYNCED_FOLDER'|' /etc/apache2/sites-available/virtualhost.conf
 sed -i 's|FORWARDED_PORT_80|'$FORWARDED_PORT_80'|' /etc/apache2/sites-available/virtualhost.conf
 a2enconf localhost > /dev/null 2>&1
@@ -36,7 +35,7 @@ apt-get -q=2 install subversion > /dev/null 2>&1
 echo '==> Setting MariaDB 10.6 repository'
 
 apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' > /dev/null 2>&1
-cp $VM_CONFIG_PATH/MariaDB.list /etc/apt/sources.list.d/MariaDB.list
+cp /vagrant/config/MariaDB.list /etc/apt/sources.list.d/MariaDB.list
 apt-get -q=2 update
 
 echo '==> Installing MariaDB'
@@ -57,7 +56,7 @@ apt-get -q=2 install php7.4 libapache2-mod-php7.4 libphp7.4-embed \
 a2dismod mpm_event > /dev/null 2>&1
 a2enmod mpm_prefork > /dev/null 2>&1
 a2enmod php7.4 > /dev/null 2>&1
-cp $VM_CONFIG_PATH/php.ini.htaccess /var/www/.htaccess
+cp /vagrant/config/php.ini.htaccess /var/www/.htaccess
 PHP_ERROR_REPORTING_INT=$(php -r 'echo '"$PHP_ERROR_REPORTING"';')
 sed -i 's|PHP_ERROR_REPORTING_INT|'$PHP_ERROR_REPORTING_INT'|' /var/www/.htaccess
 
@@ -69,7 +68,7 @@ if [ ! -d /usr/share/adminer ]; then
     sed -i 's|{if($F=="")return|{if(true)|' /usr/share/adminer/adminer.php
     curl -LsS https://raw.githubusercontent.com/vrana/adminer/master/designs/nicu/adminer.css -o /usr/share/adminer/adminer.css
 fi
-cp $VM_CONFIG_PATH/adminer.conf /etc/apache2/conf-available/adminer.conf
+cp /vagrant/config/adminer.conf /etc/apache2/conf-available/adminer.conf
 sed -i 's|FORWARDED_PORT_80|'$FORWARDED_PORT_80'|' /etc/apache2/conf-available/adminer.conf
 a2enconf adminer > /dev/null 2>&1
 
